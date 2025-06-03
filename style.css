@@ -1,0 +1,35 @@
+body {
+  font-family: 'Poppins', Arial, sans-serif;
+  background: #f8f9fa;
+  margin: 0;
+  padding: 0;
+}
+
+.hero {
+  background: linear-gradient(135deg, #6f42c1, #4a00e0);
+  color: #fff;
+  text-align: center;
+  padding: 4rem 0;
+}
+
+.hero h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+}
+
+.hero p {
+  font-size: 1.25rem;
+}
+
+.card {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  background: #343a40;
+  color: #fff;
+  margin-top: 4rem;
+}
+
