@@ -33,3 +33,20 @@ footer {
   margin-top: 4rem;
 }
 
+.page-content {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+.navbar-brand {
+  font-weight: 700;
+}
+
+.repo-card {
+  transition: transform 0.2s ease;
+}
+
+.repo-card:hover {
+  transform: translateY(-4px);
+}
+

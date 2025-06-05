@@ -2,7 +2,7 @@
 
 This repository hosts the source for my portfolio website, served via GitHub Pages.
 
-The site is a small React application that fetches information about my public repositories directly from GitHub. It uses a Bootswatch theme and Google Fonts for styling and relies on Babel to compile JSX in the browser. All assets are just plain files so no build step is required.
+The site is a small multi‑page React application that fetches information about my public repositories directly from GitHub. It uses React Router for navigation, the AOS library for subtle animations, a Bootswatch theme and Google Fonts for styling. Everything is compiled in the browser with Babel so no build step is required.
 
 ## Structure
 
