@@ -199,7 +199,7 @@ function ExperienceSection() {
       company: 'WebTech Startup',
       period: '2016 – 2018',
       description:
-        'Built responsive web applications and contributed to the company's core product. Participated in code reviews and agile development processes.',
+        "Built responsive web applications and contributed to the company's core product. Participated in code reviews and agile development processes.",
       tags: ['HTML', 'CSS', 'JavaScript', 'jQuery', 'Bootstrap'],
     },
   ];
