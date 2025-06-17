@@ -239,7 +239,7 @@ function ProjectCard({ repo }) {
         </h5>
         <p className="card-text flex-grow-1 text-muted small">{repo.description}</p>
         <div className="mt-2 d-flex flex-wrap gap-2">
-          {(repo.topics ?? []).slice(0, 5).map(topic => (
+          {(repo.topics || []).slice(0, 5).map(topic => (
             <span key={topic} className="badge bg-secondary-subtle text-secondary-emphasis">
               {topic}
             </span>
