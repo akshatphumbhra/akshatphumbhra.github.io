@@ -33,3 +33,176 @@ footer {
   margin-top: 4rem;
 }
 
+/* ------------------------------------------------------------ */
+/*                        CSS Variables                         */
+/* ------------------------------------------------------------ */
+
+:root {
+  --clr-bg: #ffffff;
+  --clr-bg-alt: #f8f9fa;
+  --clr-text: #212529;
+  --clr-primary: #8b5cf6; /* purple */
+  --clr-primary-hover: #7c3aed;
+  --clr-card-bg: #ffffff;
+  --clr-footer-bg: #343a40;
+}
+
+body[data-theme='dark'] {
+  --clr-bg: #0f0f10;
+  --clr-bg-alt: #161618;
+  --clr-text: #e9ecef;
+  --clr-primary: #a78bfa;
+  --clr-primary-hover: #8b5cf6;
+  --clr-card-bg: #1e1e20;
+  --clr-footer-bg: #000000;
+}
+
+/* Apply variables */
+body {
+  background: var(--clr-bg);
+  color: var(--clr-text);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+section.section-wrapper {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+/* ------------------------------------------------------------ */
+/*                         NAVBAR                               */
+/* ------------------------------------------------------------ */
+
+.custom-navbar {
+  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.4);
+}
+body[data-theme='light'] .custom-navbar {
+  background: rgba(255, 255, 255, 0.6);
+}
+.logo {
+  font-size: 1.5rem;
+  color: var(--clr-primary);
+  text-decoration: none;
+}
+.theme-toggle {
+  color: var(--clr-text);
+}
+
+/* ------------------------------------------------------------ */
+/*                         HERO                                 */
+/* ------------------------------------------------------------ */
+.hero {
+  min-height: 100vh;
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+  background: radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.35), transparent 40%),
+    radial-gradient(circle at 80% 50%, rgba(55, 48, 163, 0.45), transparent 40%),
+    var(--clr-bg-alt);
+  color: var(--clr-text);
+}
+.hero-tagline {
+  font-size: 1.5rem;
+  color: var(--clr-primary);
+  border-right: 2px solid var(--clr-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  animation: typing 4s steps(30, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink-caret {
+  from,
+  to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: var(--clr-primary);
+  }
+}
+
+/* ------------------------------------------------------------ */
+/*                         CARDS                                */
+/* ------------------------------------------------------------ */
+
+.card.experience-card,
+.card.project-card {
+  background: var(--clr-card-bg);
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
+}
+.card.experience-card:hover,
+.card.project-card:hover {
+  transform: translateY(-6px);
+}
+
+.project-thumb {
+  background: linear-gradient(135deg, var(--clr-primary), var(--clr-primary-hover));
+  position: relative;
+}
+
+/* ------------------------------------------------------------ */
+/*                       SKILL BARS                             */
+/* ------------------------------------------------------------ */
+.skill-label {
+  color: var(--clr-text);
+}
+.progress {
+  height: 6px;
+  background: var(--clr-bg-alt);
+}
+
+.years-exp {
+  background: var(--clr-primary);
+  color: #fff;
+  padding: 1.5rem 1rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+}
+
+/* ------------------------------------------------------------ */
+/*                        FOOTER                                */
+/* ------------------------------------------------------------ */
+.footer {
+  background: var(--clr-footer-bg);
+  color: #fff;
+}
+
+/* ------------------------------------------------------------ */
+/*                     ANIMATIONS                               */
+/* ------------------------------------------------------------ */
+
+/* Elements start invisible and slightly translated */
+.card,
+.section-wrapper > * {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.is-visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* Utility */
+.section-label {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  background: var(--clr-bg-alt);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--clr-primary);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
