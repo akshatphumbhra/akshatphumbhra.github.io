@@ -1,21 +1,717 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Portfolio of Akshat Phumbhra">
-  <title>Akshat Phumbhra</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.2/dist/lux/bootstrap.min.css">
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akshat Phumbhra - Software Engineer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            color: white;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        #gameContainer {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #ui {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .ui-panel {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            pointer-events: auto;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .ui-panel.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .intro-panel {
+            top: 50px;
+            left: 50px;
+            max-width: 300px;
+        }
+
+        .controls-panel {
+            bottom: 30px;
+            right: 30px;
+            max-width: 250px;
+        }
+
+        .station-info {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 400px;
+            text-align: center;
+            display: none;
+        }
+
+        .station-info.show {
+            display: block;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #64ffda, #1de9b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h2 {
+            color: #64ffda;
+            margin-bottom: 15px;
+        }
+
+        h3 {
+            color: #1de9b6;
+            margin-bottom: 10px;
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        .tech-tag {
+            display: inline-block;
+            background: rgba(100, 255, 218, 0.2);
+            color: #64ffda;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            margin: 2px;
+            border: 1px solid rgba(100, 255, 218, 0.3);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #64ffda, #1de9b6);
+            width: 0%;
+            transition: width 2s ease;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .key {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 8px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        .distance-indicator {
+            position: absolute;
+            top: 100px;
+            right: 50px;
+            font-size: 1.1em;
+            color: #64ffda;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+            padding: 10px 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(100, 255, 218, 0.3);
+            font-family: monospace;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 768px) {
+            .intro-panel {
+                top: 20px;
+                left: 20px;
+                right: 20px;
+                max-width: none;
+            }
+            
+            .controls-panel {
+                bottom: 20px;
+                left: 20px;
+                right: 20px;
+                max-width: none;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div id="root"></div>
-  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <script type="text/babel" src="app.js"></script>
+    <div id="gameContainer">
+        <canvas id="gameCanvas"></canvas>
+        
+        <div id="ui">
+            <div class="ui-panel intro-panel active">
+                <h1>Akshat Phumbhra</h1>
+                <p>Welcome to my interactive portfolio!</p>
+                <p>🚀 Pilot your spacecraft to explore different stations and learn about my work as a software engineer.</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 100%;"></div>
+                </div>
+            </div>
+
+            <div class="ui-panel controls-panel active">
+                <h3>🎮 Controls</h3>
+                <div class="controls">
+                    <div class="key">W</div>
+                    <div class="key">↑</div>
+                    <div class="key">⬆️</div>
+                    <div class="key">A</div>
+                    <div class="key">S</div>
+                    <div class="key">D</div>
+                    <div class="key">←</div>
+                    <div class="key">↓</div>
+                    <div class="key">→</div>
+                </div>
+                <p style="margin-top: 10px; font-size: 0.9em;">Use WASD or arrow keys to move around</p>
+            </div>
+
+            <div class="distance-indicator" id="distanceIndicator">
+                Exploring...
+            </div>
+
+            <div class="ui-panel station-info" id="stationInfo">
+                <div id="stationContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Game state
+        let scene, camera, renderer, spacecraft, particles;
+        let stations = [];
+        let keys = {};
+        let currentStation = null;
+        let velocity = new THREE.Vector3();
+        let isMoving = false;
+        
+        // Station data
+        const stationData = {
+            about: {
+                title: "About Me",
+                content: `
+                    <h2>👋 Hey there!</h2>
+                    <p>I'm a software engineer at AppFolio with a passion for building robust, scalable solutions. I graduated from Oberlin College with perfect GPAs in both Computer Science and Economics.</p>
+                    <p>I love optimizing systems, mentoring teammates, and turning complex problems into elegant code.</p>
+                    <div>
+                        <span class="tech-tag">Ruby</span>
+                        <span class="tech-tag">Rails</span>
+                        <span class="tech-tag">React</span>
+                        <span class="tech-tag">JavaScript</span>
+                        <span class="tech-tag">Python</span>
+                    </div>
+                `,
+                color: [1.0, 0.5, 0.8]
+            },
+            projects: {
+                title: "Cool Projects",
+                content: `
+                    <h2>🛠️ What I've Built</h2>
+                    <h3>StringArt Algorithm</h3>
+                    <p>A greedy algorithm that generates stunning string art portraits - combining math, art, and code!</p>
+                    
+                    <h3>ObserPoll</h3>
+                    <p>Led a team building a Flask + React polling app for enhanced classroom interaction at Oberlin.</p>
+                    
+                    <h3>Presidential Nominations Scraper</h3>
+                    <p>Built a robust data scraper parsing 40k+ legislative bills every 10 minutes at Quorum Analytics.</p>
+                    
+                    <div>
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">Flask</span>
+                        <span class="tech-tag">Django</span>
+                        <span class="tech-tag">React</span>
+                    </div>
+                `,
+                color: [0.4, 1.0, 0.6]
+            },
+            experience: {
+                title: "Experience",
+                content: `
+                    <h2>💼 Professional Journey</h2>
+                    <h3>AppFolio Inc. - Software Engineer</h3>
+                    <p>Leading technical implementations, optimizing databases (reduced records by 17%!), and mentoring new team members.</p>
+                    
+                    <h3>Quorum Analytics - SWE Intern</h3>
+                    <p>Built the Presidential Nominations product from scratch using Django and React.</p>
+                    
+                    <h3>Conceptum - Full Stack Developer</h3>
+                    <p>Led a team of 5, improved API performance by 30%, and launched an MVP with A/B testing.</p>
+                    
+                    <div>
+                        <span class="tech-tag">Leadership</span>
+                        <span class="tech-tag">Optimization</span>
+                        <span class="tech-tag">Mentoring</span>
+                    </div>
+                `,
+                color: [0.8, 0.4, 1.0]
+            },
+            contact: {
+                title: "Let's Connect!",
+                content: `
+                    <h2>🤝 Get In Touch</h2>
+                    <p>Always excited to chat about technology, algorithms, or potential collaborations!</p>
+                    <p>📧 akshatphumbhra@gmail.com</p>
+                    <p>📱 440.674.9662</p>
+                    <p>🔗 GitHub: akshatphumbhra</p>
+                    <p>💼 LinkedIn: akshatphumbhra</p>
+                    
+                    <div>
+                        <span class="tech-tag">Open to opportunities</span>
+                        <span class="tech-tag">Always learning</span>
+                    </div>
+                `,
+                color: [1.0, 0.8, 0.2]
+            }
+        };
+
+        function init() {
+            // Scene setup
+            scene = new THREE.Scene();
+            scene.fog = new THREE.Fog(0x000000, 1, 1000);
+            
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('gameCanvas'), antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setClearColor(0x000000);
+
+            // Create spacecraft
+            createSpacecraft();
+            
+            // Create stations
+            createStations();
+            
+            // Create particle field
+            createParticles();
+            
+            // Event listeners
+            setupControls();
+            
+            // Start render loop
+            animate();
+        }
+
+        function createSpacecraft() {
+            spacecraft = new THREE.Group();
+            
+            // Main body - sleek diamond shape
+            const bodyGeometry = new THREE.OctahedronGeometry(0.8, 0);
+            const bodyMaterial = new THREE.MeshBasicMaterial({ 
+                color: 0x64ffda,
+                transparent: true,
+                opacity: 0.9
+            });
+            const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+            body.scale.set(1, 0.5, 2);
+            spacecraft.add(body);
+            
+            // Wings
+            const wingGeometry = new THREE.BoxGeometry(3, 0.1, 0.8);
+            const wingMaterial = new THREE.MeshBasicMaterial({ 
+                color: 0x1de9b6,
+                transparent: true,
+                opacity: 0.8
+            });
+            const wings = new THREE.Mesh(wingGeometry, wingMaterial);
+            wings.position.z = -0.3;
+            spacecraft.add(wings);
+            
+            // Cockpit glow
+            const cockpitGeometry = new THREE.SphereGeometry(0.3, 8, 8);
+            const cockpitMaterial = new THREE.MeshBasicMaterial({ 
+                color: 0xffffff,
+                transparent: true,
+                opacity: 0.6
+            });
+            const cockpit = new THREE.Mesh(cockpitGeometry, cockpitMaterial);
+            cockpit.position.z = 0.8;
+            spacecraft.add(cockpit);
+            
+            // Engine trails (will be animated)
+            const trailGeometry = new THREE.ConeGeometry(0.1, 1.5, 6);
+            const trailMaterial = new THREE.MeshBasicMaterial({ 
+                color: 0xff6b6b,
+                transparent: true,
+                opacity: 0.0  // Start invisible
+            });
+            const leftTrail = new THREE.Mesh(trailGeometry, trailMaterial);
+            const rightTrail = new THREE.Mesh(trailGeometry, trailMaterial.clone());
+            leftTrail.position.set(-1, 0, -1.2);
+            rightTrail.position.set(1, 0, -1.2);
+            leftTrail.rotation.x = Math.PI;
+            rightTrail.rotation.x = Math.PI;
+            spacecraft.add(leftTrail);
+            spacecraft.add(rightTrail);
+            
+            spacecraft.position.set(0, 0, 0);
+            scene.add(spacecraft);
+        }
+
+        function createStations() {
+            const stationTypes = Object.keys(stationData);
+            const positions = [
+                [-30, 10, -20],
+                [25, -15, -30], 
+                [-20, -25, 15],
+                [35, 20, 10]
+            ];
+            
+            stationTypes.forEach((type, index) => {
+                const station = createStation(stationData[type], positions[index]);
+                station.userData = { type, data: stationData[type] };
+                stations.push(station);
+                scene.add(station);
+            });
+        }
+
+        function createStation(data, position) {
+            const group = new THREE.Group();
+            
+            // Main structure
+            const geometry = new THREE.OctahedronGeometry(3);
+            const material = new THREE.MeshBasicMaterial({ 
+                color: new THREE.Color().setRGB(...data.color),
+                wireframe: true,
+                transparent: true,
+                opacity: 0.8
+            });
+            const main = new THREE.Mesh(geometry, material);
+            group.add(main);
+            
+            // Orbiting elements
+            for (let i = 0; i < 3; i++) {
+                const smallGeometry = new THREE.TetrahedronGeometry(0.5);
+                const smallMaterial = new THREE.MeshBasicMaterial({ 
+                    color: new THREE.Color().setRGB(...data.color.map(c => c * 0.7))
+                });
+                const small = new THREE.Mesh(smallGeometry, smallMaterial);
+                const angle = (i / 3) * Math.PI * 2;
+                small.position.set(
+                    Math.cos(angle) * 5,
+                    Math.sin(angle) * 5,
+                    Math.sin(angle * 2) * 2
+                );
+                group.add(small);
+            }
+            
+            group.position.set(...position);
+            return group;
+        }
+
+        function createParticles() {
+            const particleCount = 300;
+            const geometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(particleCount * 3);
+            const colors = new Float32Array(particleCount * 3);
+            
+            for (let i = 0; i < particleCount; i++) {
+                const i3 = i * 3;
+                
+                // Create a sparse field with some clusters near stations
+                if (i < 100) {
+                    // Random sparse field
+                    positions[i3] = (Math.random() - 0.5) * 300;
+                    positions[i3 + 1] = (Math.random() - 0.5) * 300;
+                    positions[i3 + 2] = (Math.random() - 0.5) * 300;
+                } else {
+                    // Clustered around stations for navigation
+                    const stationIndex = Math.floor((i - 100) / 50);
+                    const stationPositions = [
+                        [-30, 10, -20], [25, -15, -30], [-20, -25, 15], [35, 20, 10]
+                    ];
+                    const station = stationPositions[stationIndex % 4];
+                    
+                    positions[i3] = station[0] + (Math.random() - 0.5) * 30;
+                    positions[i3 + 1] = station[1] + (Math.random() - 0.5) * 30;
+                    positions[i3 + 2] = station[2] + (Math.random() - 0.5) * 30;
+                }
+                
+                // Varied colors for visual interest
+                const colorChoice = Math.random();
+                if (colorChoice < 0.6) {
+                    colors[i3] = colors[i3 + 1] = colors[i3 + 2] = 1; // White
+                } else if (colorChoice < 0.8) {
+                    colors[i3] = 0.4; colors[i3 + 1] = 1; colors[i3 + 2] = 0.85; // Cyan
+                } else {
+                    colors[i3] = 1; colors[i3 + 1] = 0.7; colors[i3 + 2] = 0.1; // Gold
+                }
+            }
+            
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+            
+            const material = new THREE.PointsMaterial({
+                size: 1,
+                transparent: true,
+                opacity: 0.8,
+                vertexColors: true
+            });
+            
+            particles = new THREE.Points(geometry, material);
+            scene.add(particles);
+        }
+
+        function setupControls() {
+            document.addEventListener('keydown', (e) => {
+                keys[e.code] = true;
+            });
+            
+            document.addEventListener('keyup', (e) => {
+                keys[e.code] = false;
+            });
+            
+            // Mobile touch controls
+            let touchStartX, touchStartY;
+            document.addEventListener('touchstart', (e) => {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            });
+            
+            document.addEventListener('touchmove', (e) => {
+                if (!touchStartX || !touchStartY) return;
+                
+                const touchEndX = e.touches[0].clientX;
+                const touchEndY = e.touches[0].clientY;
+                const deltaX = touchEndX - touchStartX;
+                const deltaY = touchEndY - touchStartY;
+                
+                // Convert touch to movement
+                if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                    keys[deltaX > 0 ? 'KeyD' : 'KeyA'] = true;
+                } else {
+                    keys[deltaY > 0 ? 'KeyS' : 'KeyW'] = true;
+                }
+                
+                setTimeout(() => {
+                    Object.keys(keys).forEach(key => keys[key] = false);
+                }, 100);
+            });
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+
+        function updateMovement() {
+            const acceleration = 0.08;
+            const friction = 0.85;
+            const maxSpeed = 0.8;
+            
+            let accelerating = false;
+            
+            if (keys['KeyW'] || keys['ArrowUp']) {
+                velocity.z -= acceleration;
+                accelerating = true;
+            }
+            if (keys['KeyS'] || keys['ArrowDown']) {
+                velocity.z += acceleration;
+                accelerating = true;
+            }
+            if (keys['KeyA'] || keys['ArrowLeft']) {
+                velocity.x -= acceleration;
+                accelerating = true;
+            }
+            if (keys['KeyD'] || keys['ArrowRight']) {
+                velocity.x += acceleration;
+                accelerating = true;
+            }
+            
+            // Apply friction
+            velocity.multiplyScalar(friction);
+            
+            // Clamp to max speed
+            if (velocity.length() > maxSpeed) {
+                velocity.normalize().multiplyScalar(maxSpeed);
+            }
+            
+            // Apply velocity to spacecraft
+            spacecraft.position.add(velocity);
+            
+            // Update visual effects based on movement
+            const speed = velocity.length();
+            isMoving = speed > 0.01;
+            
+            // Smooth banking based on horizontal velocity
+            const targetBankZ = -velocity.x * 2;
+            const targetBankX = velocity.z * 0.5;
+            spacecraft.rotation.z += (targetBankZ - spacecraft.rotation.z) * 0.1;
+            spacecraft.rotation.x += (targetBankX - spacecraft.rotation.x) * 0.1;
+            
+            // Engine trail effects
+            const trails = spacecraft.children.filter(child => 
+                child.material && child.material.color.r > 0.5
+            );
+            trails.forEach(trail => {
+                if (accelerating) {
+                    trail.material.opacity = Math.min(0.8, trail.material.opacity + 0.05);
+                    trail.scale.z = 1 + speed * 2;
+                } else {
+                    trail.material.opacity = Math.max(0, trail.material.opacity - 0.03);
+                    trail.scale.z = Math.max(0.5, trail.scale.z - 0.05);
+                }
+            });
+        }
+
+        function checkStationProximity() {
+            let nearestStation = null;
+            let nearestDistance = Infinity;
+            
+            stations.forEach(station => {
+                const distance = spacecraft.position.distanceTo(station.position);
+                if (distance < nearestDistance) {
+                    nearestDistance = distance;
+                    nearestStation = station;
+                }
+            });
+            
+            const distanceIndicator = document.getElementById('distanceIndicator');
+            
+            if (nearestDistance < 8) {
+                if (currentStation !== nearestStation) {
+                    currentStation = nearestStation;
+                    showStationInfo(currentStation.userData.data);
+                }
+                distanceIndicator.textContent = `📡 Connected to ${currentStation.userData.data.title}`;
+                distanceIndicator.style.color = '#1de9b6';
+            } else {
+                if (currentStation) {
+                    hideStationInfo();
+                    currentStation = null;
+                }
+                const direction = getDirectionToNearestStation(nearestStation);
+                distanceIndicator.innerHTML = `📍 ${Math.floor(nearestDistance)}m ${direction}<br/>🎯 ${nearestStation.userData.data.title}`;
+                distanceIndicator.style.color = '#64ffda';
+            }
+        }
+        
+        function getDirectionToNearestStation(station) {
+            const direction = new THREE.Vector3().subVectors(station.position, spacecraft.position);
+            direction.normalize();
+            
+            let dirText = '';
+            if (direction.z < -0.3) dirText += '↗ Forward ';
+            if (direction.z > 0.3) dirText += '↙ Back ';
+            if (direction.x < -0.3) dirText += '← Left ';
+            if (direction.x > 0.3) dirText += '→ Right ';
+            if (direction.y > 0.3) dirText += '↑ Up ';
+            if (direction.y < -0.3) dirText += '↓ Down ';
+            
+            return dirText || '🎯';
+        }
+
+        function showStationInfo(data) {
+            const stationInfo = document.getElementById('stationInfo');
+            const stationContent = document.getElementById('stationContent');
+            stationContent.innerHTML = data.content;
+            stationInfo.classList.add('show');
+            stationInfo.classList.add('active');
+        }
+
+        function hideStationInfo() {
+            const stationInfo = document.getElementById('stationInfo');
+            stationInfo.classList.remove('show');
+            stationInfo.classList.remove('active');
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            updateMovement();
+            checkStationProximity();
+            
+            // Update camera to follow spacecraft smoothly
+            const idealCameraPosition = new THREE.Vector3(
+                spacecraft.position.x - velocity.x * 8,
+                spacecraft.position.y + 8,
+                spacecraft.position.z + 15 - velocity.z * 5
+            );
+            
+            camera.position.lerp(idealCameraPosition, 0.05);
+            
+            const lookAtTarget = new THREE.Vector3(
+                spacecraft.position.x + velocity.x * 3,
+                spacecraft.position.y,
+                spacecraft.position.z + velocity.z * 3
+            );
+            camera.lookAt(lookAtTarget);
+            
+            // Rotate stations
+            stations.forEach((station, index) => {
+                station.rotation.y += 0.01;
+                station.rotation.x += 0.005;
+                
+                // Animate orbiting elements
+                station.children.slice(1).forEach((child, childIndex) => {
+                    const time = Date.now() * 0.001;
+                    const radius = 5;
+                    const angle = (childIndex / 3) * Math.PI * 2 + time;
+                    child.position.set(
+                        Math.cos(angle) * radius,
+                        Math.sin(angle) * radius,
+                        Math.sin(angle * 2) * 2
+                    );
+                });
+            });
+            
+            renderer.render(scene, camera);
+        }
+
+        // Initialize the game
+        init();
+
+        // Hide intro after a few seconds
+        setTimeout(() => {
+            document.querySelector('.intro-panel').classList.remove('active');
+        }, 5000);
+    </script>
 </body>
 </html>
